@@ -1,15 +1,19 @@
 import React, { Fragment } from "react";
 import EventCard from "../common/EventCard";
+import { Grid } from "@material-ui/core";
 
-const test = [{ title: "Mord" }, { title: "Cykelstöld" }, { title: "Haram" }];
-
-const List = () => {
+const List = (props) => {
   return (
-    <Fragment>
-      {test.map((t) => (
-        <EventCard eventCardTitle={t.title} />
+    <Grid
+      container
+      direction="row"
+      justify="space-evenly"
+      alignItems="flex-start"
+    >
+      {props.events.map((event) => (
+        <EventCard event={event} />
       ))}
-    </Fragment>
+    </Grid>
   );
 };
 

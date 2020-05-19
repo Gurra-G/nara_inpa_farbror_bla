@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EventCard = (props) => {
+  const { event } = props;
+
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -55,19 +57,13 @@ const EventCard = (props) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={props.eventCardTitle}
-        subheader="September 14, 2016"
+        title={`${event.title_type} - ${event.description}`}
+        subheader={event.date_human}
       />
-      <CardMedia
-        className={classes.media}
-        image="/static/images/cards/paella.jpg"
-        title="Paella dish"
-      />
+      <CardMedia className={classes.media} image={event.image} title="" />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {event.content_teaser}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
