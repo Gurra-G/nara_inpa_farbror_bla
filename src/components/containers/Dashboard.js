@@ -1,11 +1,12 @@
 import React from "react";
 import AppBar from "../common/AppBar";
+import List from "../views/List";
 
 function Dashboard() {
   return (
     <React.Fragment>
       <AppBar />
-      <h1>Dashboard</h1>
+      <List />
     </React.Fragment>
   );
 }
