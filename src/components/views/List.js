@@ -11,7 +11,12 @@ const List = (props) => {
       alignItems="flex-start"
     >
       {props.events.map((event) => (
-        <EventCard event={event} />
+        <EventCard
+          changeView={props.changeView}
+          event={event}
+          key={event.id}
+          myPosition={props.myPosition}
+        />
       ))}
     </Grid>
   );
