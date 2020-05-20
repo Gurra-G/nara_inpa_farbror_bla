@@ -3,7 +3,7 @@ import { Fab } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
-const API_KEY = "AIzaSyD1UR-a8k9Un26A7HKAKbIlVAbKfU6-hfo";
+const API_KEY = "";
 
 const selectCurrentCard = (currentCardId, events) => {
   const event = events.filter((event) => event.id === currentCardId);
