@@ -1,20 +1,21 @@
-import React, { Fragment } from "react";
+import React from "react";
 import EventCard from "../common/EventCard";
 import { Grid } from "@material-ui/core";
 
-const List = (props) => {
+const List = props => {
   return (
     <Grid
       container
       direction="row"
       justify="space-evenly"
       alignItems="flex-start"
+      style={{ paddingTop: 100 }}
     >
-      {props.events.map((event) => (
+      {props.events.map(event => (
         <EventCard
+          key={event.id}
           changeView={props.changeView}
           event={event}
-          key={event.id}
           myPosition={props.myPosition}
         />
       ))}

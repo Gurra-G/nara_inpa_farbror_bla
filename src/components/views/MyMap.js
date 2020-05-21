@@ -1,53 +1,87 @@
-import React from "react";
-import { Fab } from "@material-ui/core";
+import React, { Fragment, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { Fab, CircularProgress } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
-const API_KEY = "";
+import { fetchEvents } from "../../store/actions/EventActions";
 
-const selectCurrentCard = (currentCardId, events) => {
-  const event = events.filter((event) => event.id === currentCardId);
+const GOOGLE_MAPS_API_KEY = "";
+
+const filterCurrentCard = (currentCardId, events) => {
+  const event = events.filter(event => event.id == currentCardId);
   return (
     <Marker
       position={{
         lat: event[0].lat,
-        lng: event[0].lng,
+        lng: event[0].lng
       }}
     />
   );
 };
 
-const MyMap = (props) => {
+function MyMap(props) {
+  const { id } = useParams();
+  const [myPosition, setPosition] = useState(null);
+  const events = useSelector(state => state.eventState.data);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+    const success = position => {
+      console.log("This is our position: ", position.coords);
+      setPosition(position.coords);
+    };
+
+    const error = error => {
+      console.warn("Something went wrong: ", error.message);
+    };
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }, []);
   return (
-    <React.Fragment>
-      <Fab
-        onClick={() => props.changeView("list")}
-        color="primary"
-        aria-label="add"
-        style={{ position: "absolute", left: 20, bottom: 20, zIndex: 10 }}
-      >
-        <ArrowBack />
-      </Fab>
-      <Map
-        google={props.google}
-        zoom={14}
-        initialCenter={{
-          lat: props.myPosition.latitude,
-          lng: props.myPosition.longitude,
-        }}
-      >
-        <Marker
-          position={{
-            lat: props.myPosition.latitude,
-            lng: props.myPosition.longitude,
+    <Fragment>
+      <Link to={"/"}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          style={{ position: "absolute", left: 20, bottom: 20, zIndex: 10 }}
+        >
+          <ArrowBack />
+        </Fab>
+      </Link>
+      {myPosition != null ? (
+        <Map
+          google={props.google}
+          zoom={9}
+          initialCenter={{
+            lat: myPosition.latitude,
+            lng: myPosition.longitude
           }}
-        />
-        {selectCurrentCard(props.currentView.currentCard, props.events)}
-      </Map>
-    </React.Fragment>
+        >
+          <Marker
+            position={{
+              lat: myPosition.latitude,
+              lng: myPosition.longitude
+            }}
+          />
+          {events != null ? filterCurrentCard(id, events) : ""}
+        </Map>
+      ) : (
+        <CircularProgress />
+      )}
+    </Fragment>
   );
-};
+}
 
 export default GoogleApiWrapper({
-  apiKey: API_KEY,
+  apiKey: GOOGLE_MAPS_API_KEY
 })(MyMap);

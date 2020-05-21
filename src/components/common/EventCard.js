@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -14,35 +14,35 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 345,
-    margin: 20,
+    margin: 20
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%" // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
+      duration: theme.transitions.duration.shortest
+    })
   },
   expandOpen: {
-    transform: "rotate(180deg)",
+    transform: "rotate(180deg)"
   },
   avatar: {
-    // backgroundColor: red[500],
     height: 70,
-    width: 70,
-  },
+    width: 70
+  }
 }));
 
 const distance = (lat1, lon1, lat2, lon2) => {
-  if (lat1 == lat2 && lon1 == lon2) {
+  if (lat1 === lat2 && lon1 === lon2) {
     return 0;
   } else {
     var radlat1 = (Math.PI * lat1) / 180;
@@ -64,7 +64,7 @@ const distance = (lat1, lon1, lat2, lon2) => {
   }
 };
 
-const setColor = (distance) => {
+const setColor = distance => {
   let color;
   console.log(distance);
 
@@ -82,7 +82,8 @@ const setColor = (distance) => {
   return color;
 };
 
-const EventCard = (props) => {
+const EventCard = props => {
+  const auth = useSelector(state => state.firebase.auth);
   const { event, myPosition } = props;
   const classes = useStyles();
   return (
@@ -117,14 +118,9 @@ const EventCard = (props) => {
         title={`${event.title_type} - ${event.description}`}
         subheader={event.date_human}
       />
-      <CardMedia
-        onClick={() =>
-          props.changeView({ currentView: "map", currentCard: event.id })
-        }
-        className={classes.media}
-        image={event.image}
-        title=""
-      />
+      <Link to={`/events/${event.id}`}>
+        <CardMedia className={classes.media} image={event.image} title="" />
+      </Link>
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {event.content_teaser}
@@ -132,7 +128,14 @@ const EventCard = (props) => {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          onClick={() =>
+            !auth.uid
+              ? console.log("Du är inte inloggad")
+              : console.log("Hjärtliga gratulationer")
+          }
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
         </IconButton>
       </CardActions>
