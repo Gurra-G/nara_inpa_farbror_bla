@@ -14,6 +14,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +84,7 @@ const setColor = (distance) => {
 };
 
 const EventCard = (props) => {
+  const auth = useSelector((state) => state.firebase.auth);
   const { event, myPosition } = props;
   const classes = useStyles();
   return (
@@ -132,7 +134,14 @@ const EventCard = (props) => {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          onClick={() =>
+            !auth.uid
+              ? console.log("Du är inte inloggad")
+              : console.log("Hjärtliga gratulationer")
+          }
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
         </IconButton>
       </CardActions>

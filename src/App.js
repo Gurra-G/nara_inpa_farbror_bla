@@ -1,11 +1,15 @@
 import React from "react";
 import Dashboard from "./components/containers/Dashboard";
+import AuthIsLoaded from "./components/authentication/AuthIsLoaded";
+// import AuthIsLoaded from
 
 function App() {
   return (
-    <div className="App">
-      <Dashboard />
-    </div>
+    <AuthIsLoaded>
+      <div classname="App">
+        <Dashboard />
+      </div>
+    </AuthIsLoaded>
   );
 }
 
