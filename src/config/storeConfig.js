@@ -4,12 +4,11 @@ import { getFirebase } from "react-redux-firebase";
 import { getFirestore } from "redux-firestore";
 import rootReducer from "../store/reducers/rootReducer";
 
-export default function storeConfig() {
+export default function storeConfig(preloadedState) {
   const middlewares = [
-    thunkMiddleware.withExtraArgument({ getFirebase, getFirestore }),
+    thunkMiddleware.withExtraArgument({ getFirebase, getFirestore })
   ];
   const middlewareEnhancer = applyMiddleware(...middlewares);
-  const enhancers = [middlewareEnhancer];
-  const store = createStore(rootReducer, enhancers);
+  const store = createStore(rootReducer, preloadedState, middlewareEnhancer);
   return store;
 }

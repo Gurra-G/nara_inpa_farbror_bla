@@ -1,9 +1,8 @@
 import * as Types from "./Types";
 
-export const register = (credentials) => {
-  return (dispatch, getFirebase) => {
+export const register = (firebase, credentials) => {
+  return dispatch => {
     dispatch({ type: Types.TRY_TO_REGISTER });
-    const firebase = getFirebase();
     firebase
       .createUser({ email: credentials.email, password: credentials.password })
       .then(() => {
@@ -15,10 +14,10 @@ export const register = (credentials) => {
   };
 };
 
-export const signIn = (credentials) => {
-  return (dispatch, getFirebase) => {
+export const signIn = (firebase, credentials) => {
+  return dispatch => {
+    console.log(credentials);
     dispatch({ type: Types.TRY_TO_SIGN_IN });
-    const firebase = getFirebase();
     firebase
       .login({ email: credentials.email, password: credentials.password })
       .then(() => {
@@ -30,10 +29,9 @@ export const signIn = (credentials) => {
   };
 };
 
-export const signOut = () => {
-  return (dispatch, getFirebase) => {
+export const signOut = firebase => {
+  return dispatch => {
     dispatch({ type: Types.TRY_TO_SIGN_OUT });
-    const firebase = getFirebase();
     firebase
       .logout()
       .then(() => {

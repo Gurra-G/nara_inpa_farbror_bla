@@ -1,62 +1,46 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "../common/AppBar";
+import React, { useState, useEffect, Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import List from "../views/List";
-import MyMap from "../views/MyMap";
+
+import { fetchEvents } from "../../store/actions/EventActions";
+import { CircularProgress } from "@material-ui/core";
 
 function Dashboard() {
-  const [events, setEvents] = useState([]);
   const [myPosition, setPosition] = useState(null);
-  const [currentView, setCurrentView] = useState({
-    currentView: "list",
-    currentCard: null,
-  });
+
+  const dispatch = useDispatch();
+
+  const events = useSelector(state => state.eventState.data);
 
   useEffect(() => {
-    fetch("https://brottsplatskartan.se/api/events?area=skåne län")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => setEvents(data.data))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
       timeout: 5000,
-      maximumAge: 0,
+      maximumAge: 0
     };
-    const success = (position) => {
+    const success = position => {
       console.log("This is our position: ", position.coords);
       setPosition(position.coords);
     };
 
-    const error = (error) => {
+    const error = error => {
       console.warn("Something went wrong: ", error.message);
     };
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
-
   return (
-    <React.Fragment>
-      <AppBar />
-      {currentView.currentView === "map" ? (
-        <MyMap
-          changeView={setCurrentView}
-          currentView={currentView}
-          myPosition={myPosition}
-          events={events}
-        />
+    <Fragment>
+      {myPosition != null ? (
+        <List events={events != null ? events : []} myPosition={myPosition} />
       ) : (
-        <List
-          events={events}
-          changeView={setCurrentView}
-          myPosition={myPosition}
-        />
+        <CircularProgress variant={"secondary"} />
       )}
-    </React.Fragment>
+      )}
+    </Fragment>
   );
 }
 
