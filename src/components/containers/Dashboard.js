@@ -10,7 +10,7 @@ function Dashboard() {
 
   const dispatch = useDispatch();
 
-  const events = useSelector(state => state.eventState.data);
+  const events = useSelector((state) => state.eventState.data);
 
   useEffect(() => {
     dispatch(fetchEvents());
@@ -20,14 +20,14 @@ function Dashboard() {
     const options = {
       enableHighAccuracy: true,
       timeout: 5000,
-      maximumAge: 0
+      maximumAge: 0,
     };
-    const success = position => {
+    const success = (position) => {
       console.log("This is our position: ", position.coords);
       setPosition(position.coords);
     };
 
-    const error = error => {
+    const error = (error) => {
       console.warn("Something went wrong: ", error.message);
     };
     navigator.geolocation.getCurrentPosition(success, error, options);

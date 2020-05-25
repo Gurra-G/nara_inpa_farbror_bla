@@ -10,35 +10,37 @@ import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useFirestore } from "react-redux-firebase";
+import { saveEventToDb } from "../../store/actions/EventActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
-    margin: 20
+    margin: 20,
   },
   media: {
     height: 0,
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    })
+      duration: theme.transitions.duration.shortest,
+    }),
   },
   expandOpen: {
-    transform: "rotate(180deg)"
+    transform: "rotate(180deg)",
   },
   avatar: {
     height: 70,
-    width: 70
-  }
+    width: 70,
+  },
 }));
 
 const distance = (lat1, lon1, lat2, lon2) => {
@@ -64,7 +66,7 @@ const distance = (lat1, lon1, lat2, lon2) => {
   }
 };
 
-const setColor = distance => {
+const setColor = (distance) => {
   let color;
   console.log(distance);
 
@@ -82,10 +84,14 @@ const setColor = distance => {
   return color;
 };
 
-const EventCard = props => {
-  const auth = useSelector(state => state.firebase.auth);
+const EventCard = (props) => {
+  const auth = useSelector((state) => state.firebase.auth);
+  const firestore = useFirestore();
   const { event, myPosition } = props;
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const boundAddToDb = () =>
+    dispatch(saveEventToDb(firestore, event, auth.uid));
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -129,14 +135,10 @@ const EventCard = props => {
 
       <CardActions disableSpacing>
         <IconButton
-          onClick={() =>
-            !auth.uid
-              ? console.log("Du är inte inloggad")
-              : console.log("Hjärtliga gratulationer")
-          }
+          onClick={() => boundAddToDb()}
           aria-label="add to favorites"
         >
-          <FavoriteIcon />
+          <AddCircleIcon />
         </IconButton>
       </CardActions>
     </Card>

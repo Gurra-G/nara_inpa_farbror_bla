@@ -4,33 +4,33 @@ export const fetchEvents = () => {
   return (dispatch, getState) => {
     dispatch({ type: Types.TRY_TO_FETCH_BROTTSPLATS_EVENTS });
     fetch("https://brottsplatskartan.se/api/events?area=skåne län")
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data =>
+      .then((data) =>
         dispatch({
           type: Types.SUCCEEDED_TO_FETCH_BROTTSPLATS_EVENTS,
-          payload: data.data
+          payload: data.data,
         })
       )
-      .catch(error => {
+      .catch((error) => {
         dispatch({
           type: Types.FAILED_TO_FETCH_BROTTSPLATS_EVENTS,
-          payload: error
+          payload: error,
         });
       });
   };
 };
 
 export const fetchDbEvents = (firestore, useSelector) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: Types.TRY_TO_FETCH_DB_EVENTS });
     firestore(() => [
       {
-        collection: "events"
-      }
+        collection: "events",
+      },
     ]);
-    const events = useSelector(state => state.firestore.ordered.events);
+    const events = useSelector((state) => state.firestore.ordered.events);
     if (events !== null) {
       dispatch({ type: Types.SUCCEEDED_TO_FETCH_DB_EVENTS, payload: events });
     } else {
@@ -40,19 +40,32 @@ export const fetchDbEvents = (firestore, useSelector) => {
 };
 
 export const saveEventToDb = (firestore, event, uid) => {
+  console.log(uid);
   const finalEvent = { ...event, user: uid };
-  return dispatch => {
-    dispatch({ type: Types.TRY_TO_SAVE_DB_EVENT });
-    firestore
-      .collection("events")
-      .doc(event.id)
-      .add(finalEvent)
-      .then(() => {
-        dispatch({ type: Types.SUCCEEDED_TO_SAVE_DB_EVENT });
-      })
-      .catch(error => {
-        dispatch({ type: Types.FAILED_TO_SAVE_DB_EVENT });
-        console.log(error);
+  console.log(finalEvent);
+  return (dispatch) => {
+    try {
+      dispatch({ type: Types.TRY_TO_SAVE_DB_EVENT });
+      firestore
+        .collection("events")
+        .doc(event.id.toString())
+        .set(finalEvent)
+        .then(() => {
+          dispatch({ type: Types.SUCCEEDED_TO_SAVE_DB_EVENT });
+        })
+        .catch((error) => {
+          dispatch({ type: Types.FAILED_TO_SAVE_DB_EVENT });
+          dispatch({
+            type: Types.OPEN_CUSTOMSNACKBAR,
+            payload: { text: "DU DU DU, du är inte inloggad", color: "error" },
+          });
+          console.log(error);
+        });
+    } catch {
+      dispatch({
+        type: Types.OPEN_CUSTOMSNACKBAR,
+        payload: { text: "DU DU DU, du är inte inloggad", color: "error" },
       });
+    }
   };
 };

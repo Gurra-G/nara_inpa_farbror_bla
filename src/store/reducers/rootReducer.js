@@ -3,9 +3,11 @@ import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
 
 import EventReducer from "./EventReducer";
+import SnackbarReducer from "./SnackbarReducer";
 
 export default combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
-  eventState: EventReducer
+  eventState: EventReducer,
+  snackbarState: SnackbarReducer,
 });

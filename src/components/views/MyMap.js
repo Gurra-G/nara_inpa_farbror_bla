@@ -7,15 +7,15 @@ import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
 import { fetchEvents } from "../../store/actions/EventActions";
 
-const GOOGLE_MAPS_API_KEY = "";
+const GOOGLE_MAPS_API_KEY = "AIzaSyD1UR-a8k9Un26A7HKAKbIlVAbKfU6-hfo";
 
 const filterCurrentCard = (currentCardId, events) => {
-  const event = events.filter(event => event.id == currentCardId);
+  const event = events.filter((event) => event.id == currentCardId);
   return (
     <Marker
       position={{
         lat: event[0].lat,
-        lng: event[0].lng
+        lng: event[0].lng,
       }}
     />
   );
@@ -24,7 +24,7 @@ const filterCurrentCard = (currentCardId, events) => {
 function MyMap(props) {
   const { id } = useParams();
   const [myPosition, setPosition] = useState(null);
-  const events = useSelector(state => state.eventState.data);
+  const events = useSelector((state) => state.eventState.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,14 +35,14 @@ function MyMap(props) {
     const options = {
       enableHighAccuracy: true,
       timeout: 5000,
-      maximumAge: 0
+      maximumAge: 0,
     };
-    const success = position => {
+    const success = (position) => {
       console.log("This is our position: ", position.coords);
       setPosition(position.coords);
     };
 
-    const error = error => {
+    const error = (error) => {
       console.warn("Something went wrong: ", error.message);
     };
     navigator.geolocation.getCurrentPosition(success, error, options);
@@ -64,13 +64,13 @@ function MyMap(props) {
           zoom={9}
           initialCenter={{
             lat: myPosition.latitude,
-            lng: myPosition.longitude
+            lng: myPosition.longitude,
           }}
         >
           <Marker
             position={{
               lat: myPosition.latitude,
-              lng: myPosition.longitude
+              lng: myPosition.longitude,
             }}
           />
           {events != null ? filterCurrentCard(id, events) : ""}
@@ -83,5 +83,5 @@ function MyMap(props) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: GOOGLE_MAPS_API_KEY
+  apiKey: GOOGLE_MAPS_API_KEY,
 })(MyMap);
