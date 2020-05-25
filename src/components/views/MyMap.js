@@ -7,7 +7,7 @@ import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
 import { fetchEvents } from "../../store/actions/EventActions";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyD1UR-a8k9Un26A7HKAKbIlVAbKfU6-hfo";
+const GOOGLE_MAPS_API_KEY = "";
 
 const filterCurrentCard = (currentCardId, events) => {
   const event = events.filter((event) => event.id == currentCardId);
