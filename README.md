@@ -1,8 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Nära inpå farbror blå
 
-## Available Scripts
+Nära inpå farbror blå is a web application that allow users to fetch information
+about current emergency situations in Skåne. The application measures the distance
+between a situation and the current location of the user in order to inform them about
+how close they are to danger!
 
-In the project directory, you can run:
+## Project description
+
+The application was built using the React framework with Redux, Firebase and Material-UI.
+Furthermore the application uses https://brottsplatskartan.se/sida/api in order to fetch
+current situations happening in Skåne.
+
+### Why we chose React
+
+We chose to work with React for this project because it is one of the more populare frameworks
+to use for frontend development. We chose this above Vue.js and Angular.js as all team members
+had previous experience working with React and wanted to further increase their knowledge within the framework.
+
+Vue.js and Angular.js is rapidly gaining popularity but in the 2019 stackoverflow survey React
+is still the most populare framework and this was further motivation for the choice[1].
+
+Angular however has a steeper learning curve compared to the other frameworks and this made it
+feel less appropiate to use for this project.
+
+The fact that React has been very popular for a long time provides it with the advantage
+of having a large amount of resources available online such as guides and Q&As [2].
+
+## Getting started
+
+### `Google API key`
+
+In order to run this project successfully you will need to generate
+a javascript google maps api key and place it in the googleConfig.js file.
+
+### `npm i`
+
+Will install the required dependencies for this project.
 
 ### `npm start`
 
@@ -12,57 +45,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `npm test`
+### References
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[1]: https://insights.stackoverflow.com/survey/2019#technology-_-most-loved-dreaded-and-wanted-web-frameworks
+[2]: https://www.codeinwp.com/blog/angular-vs-vue-vs-react/
