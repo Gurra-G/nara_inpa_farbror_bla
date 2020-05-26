@@ -47,8 +47,8 @@ You will also see any lint errors in the console.
 
 ### References
 
-[1] https://insights.stackoverflow.com/survey/2019#technology-\_-most-loved-dreaded-and-wanted-web-frameworks
-[2] https://www.codeinwp.com/blog/angular-vs-vue-vs-react/
+[[1]] https://insights.stackoverflow.com/survey/2019#technology-\_-most-loved-dreaded-and-wanted-web-frameworks
+[[2]] https://www.codeinwp.com/blog/angular-vs-vue-vs-react/
 
 [1]: https://insights.stackoverflow.com/survey/2019#technology-_-most-loved-dreaded-and-wanted-web-frameworks
 [2]: https://www.codeinwp.com/blog/angular-vs-vue-vs-react/
