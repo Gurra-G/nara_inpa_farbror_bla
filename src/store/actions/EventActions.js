@@ -41,7 +41,18 @@ export const fetchDbEvents = (firestore, useSelector) => {
 
 export const saveEventToDb = (firestore, event, uid) => {
   console.log(uid);
-  const finalEvent = { ...event, user: uid };
+  const finalEvent = {
+    lat: event.lat,
+    lng: event.lng,
+    date_human: event.date_human,
+    description: event.description,
+    image: event.image,
+    title_type: event.title_type,
+    content_teaser: event.content_teaser,
+    id: event.id,
+    content_formatted: event.content_formatted,
+    user: uid,
+  };
   console.log(finalEvent);
   return (dispatch) => {
     try {
@@ -52,19 +63,30 @@ export const saveEventToDb = (firestore, event, uid) => {
         .set(finalEvent)
         .then(() => {
           dispatch({ type: Types.SUCCEEDED_TO_SAVE_DB_EVENT });
+          dispatch({
+            type: Types.OPEN_CUSTOMSNACKBAR,
+            payload: { text: "Händelsen har sparats.", color: "success" },
+          });
         })
         .catch((error) => {
+          console.log("Felmeddelande: ", error);
           dispatch({ type: Types.FAILED_TO_SAVE_DB_EVENT });
           dispatch({
             type: Types.OPEN_CUSTOMSNACKBAR,
-            payload: { text: "DU DU DU, du är inte inloggad", color: "error" },
+            payload: {
+              text: "Du måste vara inloggad för att spara en händelse.",
+              color: "error",
+            },
           });
           console.log(error);
         });
     } catch {
       dispatch({
         type: Types.OPEN_CUSTOMSNACKBAR,
-        payload: { text: "DU DU DU, du är inte inloggad", color: "error" },
+        payload: {
+          text: "Du måste vara inloggad för att spara en händelse.",
+          color: "error",
+        },
       });
     }
   };
