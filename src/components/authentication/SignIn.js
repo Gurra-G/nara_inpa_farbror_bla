@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -10,52 +10,54 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  IconButton
+  IconButton,
+  Typography,
 } from "@material-ui/core";
 import {
   Mail,
   Visibility,
   VisibilityOff,
-  ContactsOutlined
+  ContactsOutlined,
 } from "@material-ui/icons";
 import clsx from "clsx";
 
 import { signIn } from "../../store/actions/AuthActions";
 import { useFirebase } from "react-redux-firebase";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: 5,
     border: "none",
-    padding: theme.spacing(2, 4, 3)
+    padding: theme.spacing(2, 4, 3),
   },
   submitBtn: {
     display: "block",
-    margin: "40px auto 10px auto"
+    margin: "40px auto 10px auto",
   },
   margin: {
     display: "block",
-    margin: 20
-  }
+    margin: 20,
+  },
 }));
 
-const SignIn = props => {
+const SignIn = (props) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const classes = useStyles();
+  const authState = useSelector((state) => state.authState.data);
   const [values, setValues] = useState({
     email: "",
     password: "",
-    showPassword: false
+    showPassword: false,
   });
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
   const handleClickShowPassword = () => {
@@ -64,13 +66,13 @@ const SignIn = props => {
 
   const boundSignIn = () => dispatch(signIn(firebase, values));
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     boundSignIn();
-    props.handleClose();
+    // props.handleClose(); SHOULD WE CLOSE THE FORM AFTER SUCCESS??
   };
 
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
@@ -84,7 +86,7 @@ const SignIn = props => {
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500
+        timeout: 500,
       }}
     >
       <Fade in={props.open}>
@@ -134,13 +136,16 @@ const SignIn = props => {
                 }
               />
             </FormControl>
+            <Typography paragraph color={authState.color}>
+              {authState.text}
+            </Typography>
             <Button
               className={classes.submitBtn}
               variant="contained"
               color="primary"
               type={"submit"}
             >
-              SIGN IN
+              Logga in
             </Button>
           </form>
         </div>

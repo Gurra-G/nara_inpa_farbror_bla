@@ -7,7 +7,7 @@ import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
 import { fetchEvents } from "../../store/actions/EventActions";
 
-const GOOGLE_MAPS_API_KEY = "";
+const GOOGLE_MAPS_API_KEY = "AIzaSyD1UR-a8k9Un26A7HKAKbIlVAbKfU6-hfo";
 
 const filterCurrentCard = (currentCardId, events) => {
   const event = events.filter((event) => event.id == currentCardId);
@@ -38,7 +38,6 @@ function MyMap(props) {
       maximumAge: 0,
     };
     const success = (position) => {
-      console.log("This is our position: ", position.coords);
       setPosition(position.coords);
     };
 

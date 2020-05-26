@@ -4,19 +4,13 @@ import List from "../views/List";
 
 import { fetchEvents } from "../../store/actions/EventActions";
 import { CircularProgress } from "@material-ui/core";
-import { useFirestoreConnect } from "react-redux-firebase";
 
-function Dashboard() {
-  const [filter, setFilter] = useState("Brottsplatsevent");
+function Dashboard(props) {
   const [myPosition, setPosition] = useState(null);
-
   const dispatch = useDispatch();
 
-  useFirestoreConnect([{ collection: "events" }]);
-
+  const filter = useSelector((state) => state.filterState.filter);
   const events = useSelector((state) => state.eventState.data);
-  const myEvents = useSelector((state) => state.firestore.ordered.events);
-  console.log(myEvents);
 
   useEffect(() => {
     dispatch(fetchEvents());
@@ -29,7 +23,6 @@ function Dashboard() {
       maximumAge: 0,
     };
     const success = (position) => {
-      console.log("This is our position: ", position.coords);
       setPosition(position.coords);
     };
 
@@ -38,10 +31,11 @@ function Dashboard() {
     };
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
+
   return (
     <Fragment>
       {myPosition != null ? (
-        <List events={events != null ? events : []} myPosition={myPosition} />
+        <List events={!filter ? events : []} myPosition={myPosition} />
       ) : (
         <CircularProgress variant={"secondary"} />
       )}

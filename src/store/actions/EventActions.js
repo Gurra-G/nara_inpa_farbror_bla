@@ -39,8 +39,21 @@ export const fetchDbEvents = (firestore, useSelector) => {
   };
 };
 
+export const deleteDbEvent = (firestore, id, uid) => {
+  return (dispatch) => {
+    dispatch({ type: Types.TRY_TO_DELETE_DB_EVENT });
+    firestore
+      .collection("users")
+      .doc(uid)
+      .collection("events")
+      .doc(id.toString())
+      .delete()
+      .then(() => dispatch({ type: Types.SUCCEEDED_TO_DELETE_DB_EVENT }))
+      .catch(() => dispatch({ type: Types.FAILED_TO_DELETE_DB_EVENT }));
+  };
+};
+
 export const saveEventToDb = (firestore, event, uid) => {
-  console.log(uid);
   const finalEvent = {
     lat: event.lat,
     lng: event.lng,
@@ -53,11 +66,12 @@ export const saveEventToDb = (firestore, event, uid) => {
     content_formatted: event.content_formatted,
     user: uid,
   };
-  console.log(finalEvent);
   return (dispatch) => {
     try {
       dispatch({ type: Types.TRY_TO_SAVE_DB_EVENT });
       firestore
+        .collection("users")
+        .doc(uid)
         .collection("events")
         .doc(event.id.toString())
         .set(finalEvent)
@@ -69,7 +83,6 @@ export const saveEventToDb = (firestore, event, uid) => {
           });
         })
         .catch((error) => {
-          console.log("Felmeddelande: ", error);
           dispatch({ type: Types.FAILED_TO_SAVE_DB_EVENT });
           dispatch({
             type: Types.OPEN_CUSTOMSNACKBAR,
@@ -78,7 +91,6 @@ export const saveEventToDb = (firestore, event, uid) => {
               color: "error",
             },
           });
-          console.log(error);
         });
     } catch {
       dispatch({

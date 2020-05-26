@@ -1,9 +1,9 @@
 import * as Types from "../actions/Types";
 
 const INIT_STATE = {
-  data: null,
+  data: [],
   loading: false,
-  error: false
+  error: false,
 };
 
 const EventReducer = (state = INIT_STATE, action) => {
@@ -12,17 +12,17 @@ const EventReducer = (state = INIT_STATE, action) => {
     case Types.TRY_TO_FETCH_BROTTSPLATS_EVENTS:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case Types.SUCCEEDED_TO_FETCH_BROTTSPLATS_EVENTS:
       return {
         ...state,
-        data: payload
+        data: payload,
       };
     case Types.FAILED_TO_FETCH_BROTTSPLATS_EVENTS:
       return {
         ...state,
-        data: payload
+        data: payload,
       };
     default:
       return state;

@@ -11,12 +11,13 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
-import { saveEventToDb } from "../../store/actions/EventActions";
+import { saveEventToDb, deleteDbEvent } from "../../store/actions/EventActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +69,6 @@ const distance = (lat1, lon1, lat2, lon2) => {
 
 const setColor = (distance) => {
   let color;
-  console.log(distance);
 
   switch (true) {
     case distance < 1:
@@ -86,12 +86,15 @@ const setColor = (distance) => {
 
 const EventCard = (props) => {
   const auth = useSelector((state) => state.firebase.auth);
+  const filter = useSelector((state) => state.filterState.filter);
   const firestore = useFirestore();
   const { event, myPosition } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
   const boundAddToDb = () =>
     dispatch(saveEventToDb(firestore, event, auth.uid));
+  const boundDeleteEvent = (id) =>
+    dispatch(deleteDbEvent(firestore, id, auth.uid));
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -116,11 +119,6 @@ const EventCard = (props) => {
             )}km`}
           </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
         title={`${event.title_type} - ${event.description}`}
         subheader={event.date_human}
       />
@@ -134,12 +132,23 @@ const EventCard = (props) => {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton
-          onClick={() => boundAddToDb()}
-          aria-label="add to favorites"
-        >
-          <AddCircleIcon />
-        </IconButton>
+        {!filter ? (
+          <IconButton
+            onClick={() => boundAddToDb()}
+            aria-label="add to favorites"
+            color="primary"
+          >
+            <AddCircleIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => boundDeleteEvent(event.id)}
+            aria-label="delete"
+            color="secondary"
+          >
+            <DeleteIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );
