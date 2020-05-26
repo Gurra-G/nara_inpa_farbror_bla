@@ -4,13 +4,19 @@ import List from "../views/List";
 
 import { fetchEvents } from "../../store/actions/EventActions";
 import { CircularProgress } from "@material-ui/core";
+import { useFirestoreConnect } from "react-redux-firebase";
 
 function Dashboard() {
+  const [filter, setFilter] = useState("Brottsplatsevent");
   const [myPosition, setPosition] = useState(null);
 
   const dispatch = useDispatch();
 
+  useFirestoreConnect([{ collection: "events" }]);
+
   const events = useSelector((state) => state.eventState.data);
+  const myEvents = useSelector((state) => state.firestore.ordered.events);
+  console.log(myEvents);
 
   useEffect(() => {
     dispatch(fetchEvents());
