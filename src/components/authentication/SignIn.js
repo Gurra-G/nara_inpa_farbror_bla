@@ -12,6 +12,10 @@ import {
   InputAdornment,
   IconButton,
   Typography,
+  AppBar,
+  Tabs,
+  Tab,
+  Box,
 } from "@material-ui/core";
 import {
   Mail,
@@ -21,10 +25,14 @@ import {
 } from "@material-ui/icons";
 import clsx from "clsx";
 
-import { signIn } from "../../store/actions/AuthActions";
+import { signIn, register } from "../../store/actions/AuthActions";
 import { useFirebase } from "react-redux-firebase";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
   modal: {
     display: "flex",
     alignItems: "center",
@@ -46,6 +54,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={""}
+      id={`simple-tabpanel-${""}`}
+      aria-labelledby={`simple-tab-${""}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 const SignIn = (props) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
@@ -54,26 +89,45 @@ const SignIn = (props) => {
   const [values, setValues] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
     showPassword: false,
   });
+
+  const [tabIndex, setTabIndex] = useState(0);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
+
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
   const boundSignIn = () => dispatch(signIn(firebase, values));
 
+  const boundRegister = () => dispatch(register(firebase, values));
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    boundSignIn();
+    const { password, confirmPassword } = values;
+    if (tabIndex === 0) {
+      boundSignIn();
+    } else {
+      if (password === confirmPassword) {
+        boundRegister();
+      } else {
+      }
+    }
+
     // props.handleClose(); SHOULD WE CLOSE THE FORM AFTER SUCCESS??
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
   };
 
   return (
@@ -91,63 +145,108 @@ const SignIn = (props) => {
     >
       <Fade in={props.open}>
         <div className={classes.paper}>
-          <h2 id="transition-modal-title">Sign in</h2>
-          <form
-            onSubmit={handleSubmit}
-            className={classes.root}
-            noValidate
-            autoComplete="off"
-          >
-            <FormControl className={clsx(classes.margin, classes.textField)}>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input
-                id="email"
-                type={"text"}
-                value={values.email}
-                onChange={handleChange("email")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <Mail />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl className={clsx(classes.margin, classes.textField)}>
-              <InputLabel htmlFor="standard-adornment-password">
-                Password
-              </InputLabel>
-              <Input
-                id="standard-adornment-password"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={handleChange("password")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Typography paragraph color={authState.color}>
-              {authState.text}
-            </Typography>
-            <Button
-              className={classes.submitBtn}
-              variant="contained"
-              color="primary"
-              type={"submit"}
+          <AppBar position="static">
+            <Tabs
+              value={tabIndex}
+              onChange={handleTabChange}
+              aria-label="simple tabs example"
             >
-              Logga in
-            </Button>
-          </form>
+              <Tab label="Logga in" {...a11yProps(0)} />
+              <Tab label="Registrera" {...a11yProps(1)} />
+            </Tabs>
+          </AppBar>
+
+          <TabPanel value={tabIndex} index={tabIndex}>
+            <form
+              onSubmit={handleSubmit}
+              className={classes.root}
+              noValidate
+              autoComplete="off"
+              id="signIn"
+            >
+              <FormControl className={clsx(classes.margin, classes.textField)}>
+                <InputLabel htmlFor="signInEmail">Email</InputLabel>
+                <Input
+                  id="signInEmail"
+                  type={"text"}
+                  value={values.email}
+                  onChange={handleChange("signInEmail")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <Mail />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControl className={clsx(classes.margin, classes.textField)}>
+                <InputLabel htmlFor="signInPassword">Password</InputLabel>
+                <Input
+                  id="signInPassword"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={handleChange("signInPassword")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              {tabIndex === 1 ? (
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="confirmPassword">Password</InputLabel>
+                  <Input
+                    id="confirmPassword"
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("confirmPassword")}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              ) : (
+                ""
+              )}
+              <Typography paragraph color={authState.color}>
+                {authState.text}
+              </Typography>
+              <Button
+                className={classes.submitBtn}
+                variant="contained"
+                color="primary"
+                type={"submit"}
+              >
+                {tabIndex === 0 ? "Logga in" : "Registrera"}
+              </Button>
+            </form>
+          </TabPanel>
         </div>
       </Fade>
     </Modal>
