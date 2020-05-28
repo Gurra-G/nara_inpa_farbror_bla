@@ -71,10 +71,10 @@ const setColor = (distance) => {
   let color;
 
   switch (true) {
-    case distance < 1:
+    case distance < 2:
       color = { backgroundColor: "crimson" };
       break;
-    case distance > 5 && distance < 20:
+    case distance > 2 && distance < 20:
       color = { backgroundColor: "gold", color: "black" };
       break;
     default:

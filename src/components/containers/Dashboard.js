@@ -25,7 +25,6 @@ function Dashboard(props) {
     const success = (position) => {
       setPosition(position.coords);
     };
-
     const error = (error) => {
       console.warn("Something went wrong: ", error.message);
     };
@@ -33,14 +32,14 @@ function Dashboard(props) {
   }, []);
 
   return (
-    <Fragment>
+    <div id="dashboardDiv">
       {myPosition != null ? (
         <List events={!filter ? events : []} myPosition={myPosition} />
       ) : (
         <CircularProgress variant={"secondary"} />
       )}
       )}
-    </Fragment>
+    </div>
   );
 }
 

@@ -22,6 +22,7 @@ import {
   Visibility,
   VisibilityOff,
   ContactsOutlined,
+  SentimentSatisfied,
 } from "@material-ui/icons";
 import clsx from "clsx";
 
@@ -115,11 +116,10 @@ const SignIn = (props) => {
     } else {
       if (password === confirmPassword) {
         boundRegister();
-      } else {
+        props.handleClose();
       }
     }
-
-    // props.handleClose(); SHOULD WE CLOSE THE FORM AFTER SUCCESS??
+    setValues({ email: "", password: "", confirmPassword: "" });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -165,12 +165,12 @@ const SignIn = (props) => {
               id="signIn"
             >
               <FormControl className={clsx(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="signInEmail">Email</InputLabel>
+                <InputLabel htmlFor="email">Email</InputLabel>
                 <Input
-                  id="signInEmail"
+                  id="email"
                   type={"text"}
                   value={values.email}
-                  onChange={handleChange("signInEmail")}
+                  onChange={handleChange("email")}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton>
@@ -181,12 +181,12 @@ const SignIn = (props) => {
                 />
               </FormControl>
               <FormControl className={clsx(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="signInPassword">Password</InputLabel>
+                <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
-                  id="signInPassword"
+                  id="password"
                   type={values.showPassword ? "text" : "password"}
                   value={values.password}
-                  onChange={handleChange("signInPassword")}
+                  onChange={handleChange("password")}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -208,11 +208,13 @@ const SignIn = (props) => {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="confirmPassword">Password</InputLabel>
+                  <InputLabel htmlFor="confirmPassword">
+                    Confirm Password
+                  </InputLabel>
                   <Input
                     id="confirmPassword"
                     type={values.showPassword ? "text" : "password"}
-                    value={values.password}
+                    value={values.confirmPassword}
                     onChange={handleChange("confirmPassword")}
                     endAdornment={
                       <InputAdornment position="end">
@@ -236,6 +238,7 @@ const SignIn = (props) => {
               )}
               <Typography paragraph color={authState.color}>
                 {authState.text}
+                {authState.success ? props.handleClose() : ""}
               </Typography>
               <Button
                 className={classes.submitBtn}

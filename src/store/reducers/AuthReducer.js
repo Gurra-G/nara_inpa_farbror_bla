@@ -4,6 +4,7 @@ const INIT_STATE = {
   data: {
     text: "",
     color: "",
+    success: false,
   },
 };
 
@@ -14,7 +15,7 @@ const AuthReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         data: {
-          text: "laddar...",
+          text: "Laddar...",
           color: "default",
         },
       };
@@ -22,8 +23,7 @@ const AuthReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         data: {
-          text: "Välkommen!",
-          color: "success",
+          success: true,
         },
       };
     case Types.FAILED_TO_SIGN_IN:

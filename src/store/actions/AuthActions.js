@@ -1,4 +1,5 @@
 import * as Types from "./Types";
+import { $CombinedState } from "redux";
 
 export const register = (firebase, credentials) => {
   return (dispatch) => {
@@ -21,6 +22,13 @@ export const signIn = (firebase, credentials) => {
       .login({ email: credentials.email, password: credentials.password })
       .then(() => {
         dispatch({ type: Types.SUCCEEDED_TO_SIGN_IN });
+        dispatch({
+          type: Types.OPEN_CUSTOMSNACKBAR,
+          payload: {
+            text: `Välkommen ${credentials.email}!`,
+            color: "success",
+          },
+        });
       })
       .catch(() => {
         dispatch({ type: Types.FAILED_TO_SIGN_IN });

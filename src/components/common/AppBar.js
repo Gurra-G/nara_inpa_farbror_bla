@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { signOut } from "../../store/actions/AuthActions";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { setFilter, dropFilter } from "../../store/actions/FilterActions";
+import { Redirect } from "react-router";
 
 function HideOnScroll(props) {
   const { children, window } = props; //Property destructering
@@ -47,7 +48,11 @@ const Appbar = (props) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const [anchorEl, setAnchorEl] = useState(null);
-  const boundSignOut = () => dispatch(signOut(firebase));
+  const boundSignOut = () => {
+    dispatch(signOut(firebase));
+    window.location.reload(false);
+    /*Please forgive us*/
+  };
   const boundSetFilter = () => {
     dispatch(setFilter());
     handleMenuClose();
