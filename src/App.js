@@ -6,9 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import SignIn from "./components/authentication/SignIn";
 import CustomSnackbar from "./components/common/CustomSnackbar";
 
+/**
+ * Main component to hold our
+ * BrowserRouter
+ * AuthIsloaded
+ * AppBar
+ * SignIn
+ * CustomSnackbar
+ */
 function App() {
   const [open, setOpen] = useState(false);
 
+  //Used to open & close our SignIn-Register form
   const handleOpen = () => {
     setOpen(true);
   };
@@ -22,7 +31,6 @@ function App() {
         <div className="App">
           <AppBar handleOpen={handleOpen} />
           <SignIn open={open} handleClose={handleClose} />
-
           <CustomSnackbar />
           <Router />
         </div>

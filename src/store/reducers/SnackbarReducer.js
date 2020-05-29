@@ -6,6 +6,7 @@ const INIT_STATE = {
   color: "",
 };
 
+//handles the displaying, color and text of our alert function
 const SnackbarReducer = (state = INIT_STATE, action) => {
   const { type, payload } = action;
   switch (type) {

@@ -8,6 +8,7 @@ const INIT_STATE = {
   },
 };
 
+//handles the sign in form submission
 const AuthReducer = (state = INIT_STATE, action) => {
   const { type } = action;
   switch (type) {

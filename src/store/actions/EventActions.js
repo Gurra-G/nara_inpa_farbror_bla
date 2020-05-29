@@ -1,5 +1,6 @@
 import * as Types from "./Types";
 
+//handles the retreaving of events thats later used in our event cards by dispatching an action
 export const fetchEvents = (counter) => {
   return (dispatch, getState) => {
     const oldEvents = getState().eventState.data;
@@ -26,6 +27,7 @@ export const fetchEvents = (counter) => {
   };
 };
 
+//handles the retreaving of events thats saved in the database for a specific user by dispatching an action
 export const fetchDbEvents = (firestore, useSelector) => {
   return (dispatch) => {
     dispatch({ type: Types.TRY_TO_FETCH_DB_EVENTS });
@@ -43,6 +45,7 @@ export const fetchDbEvents = (firestore, useSelector) => {
   };
 };
 
+//handles the deletion of an event thats saved in the database for a specific user by dispatching an action
 export const deleteDbEvent = (firestore, id, uid) => {
   return (dispatch) => {
     dispatch({ type: Types.TRY_TO_DELETE_DB_EVENT });
@@ -57,6 +60,7 @@ export const deleteDbEvent = (firestore, id, uid) => {
   };
 };
 
+//handles the saving of an event for a specific user in the firestore by dispatching an action
 export const saveEventToDb = (firestore, event, uid) => {
   const finalEvent = {
     lat: event.lat,

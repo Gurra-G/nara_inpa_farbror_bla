@@ -10,13 +10,16 @@ import { Provider } from "react-redux";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from "redux-firestore";
 
-const store = storeConfig();
+const store = storeConfig(); //Creates a store from redux from our config file
+
+//A property object containg our firebase configurations
 const reactReduxFirebaseProps = {
   firebase: fbConfig,
   config: { userProfile: "users", useFirestoreForProfile: true },
   dispatch: store.dispatch,
   createFirestoreInstance,
 };
+
 render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...reactReduxFirebaseProps}>

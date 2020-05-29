@@ -19,6 +19,7 @@ import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { setFilter, dropFilter } from "../../store/actions/FilterActions";
 import { Redirect } from "react-router";
 
+//Hides the navigationbar when the user scrolls down
 function HideOnScroll(props) {
   const { children, window } = props; //Property destructering
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -44,43 +45,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A component used for rendering the AppBar
+ * @param {Object} props - contains a boolean for wether comoponent is open
+ */
 const Appbar = (props) => {
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
+
+  // sets up a variable that allows access to firebase
   const firebase = useFirebase();
+
+  //Anchors the menu component when the Appbar is open
   const [anchorEl, setAnchorEl] = useState(null);
+
+  //Used for binding the dispatch of our SignOut action
   const boundSignOut = () => {
     dispatch(signOut(firebase));
     window.location.reload(false);
     /*Please forgive us*/
   };
+
+  //Used for binding the dispatch of our SetFilter action
   const boundSetFilter = () => {
     dispatch(setFilter());
     handleMenuClose();
   };
+
+  //Used for binding the dispatch of our DropFilter action (resets the filter)
   const boundDropFilter = () => {
     dispatch(dropFilter());
     handleMenuClose();
   };
+
+  // used for setting components styles
   const classes = useStyles();
+
+  //used for checking the authState data (error text and loading text)
   const auth = useSelector((state) => state.firebase.auth);
 
+  //Used for opening the menu based a boolean value
   const isMenuOpen = Boolean(anchorEl);
 
+  //Used for anchoring the profile Menu
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  //Used for closing the menu based a boolean value
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  const menuId = "primary-setting-menu";
-
+  //Used for rendering the Menu component when the user clicks on menu icon
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
+      id={"primary-setting-menu"}
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
@@ -108,7 +130,7 @@ const Appbar = (props) => {
             <IconButton
               edge="end"
               aria-label="account of current user"
-              aria-controls={menuId}
+              aria-controls={"primary-setting-menu"}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"

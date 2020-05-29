@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Dashboard from "../containers/Dashboard";
 import MyMap from "../views/MyMap";
 
+//used for redirecting the user to different comopents
 const Router = () => {
   return (
     <Switch>

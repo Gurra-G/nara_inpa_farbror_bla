@@ -8,6 +8,7 @@ import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import { fetchEvents } from "../../store/actions/EventActions";
 import { GOOGLE_MAPS_API_KEY } from "../../config/googleConfig";
 
+//used for displaying the current event (card) the user clicked on from all events
 const filterCurrentCard = (currentCardId, events) => {
   const event = events.filter((event) => event.id == currentCardId);
   return (
@@ -20,16 +21,29 @@ const filterCurrentCard = (currentCardId, events) => {
   );
 };
 
-function MyMap(props) {
+/**
+ *
+ * @param {object} props - contains the google object
+ */
+const MyMap = (props) => {
+  //used for getting the current event id from the url
   const { id } = useParams();
+
+  //used for keeping track of the users position
   const [myPosition, setPosition] = useState(null);
+
+  //used for getting the events from redux state
   const events = useSelector((state) => state.eventState.data);
+
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
 
+  //Dispatches an action which fires a api call for fetcing events
   useEffect(() => {
     dispatch(fetchEvents());
   }, [dispatch]);
 
+  //Gets the users position through geolocation
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
@@ -39,12 +53,12 @@ function MyMap(props) {
     const success = (position) => {
       setPosition(position.coords);
     };
-
     const error = (error) => {
       console.warn("Something went wrong: ", error.message);
     };
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
+
   return (
     <Fragment>
       <Link to={"/"}>
@@ -78,7 +92,7 @@ function MyMap(props) {
       )}
     </Fragment>
   );
-}
+};
 
 export default GoogleApiWrapper({
   apiKey: GOOGLE_MAPS_API_KEY,

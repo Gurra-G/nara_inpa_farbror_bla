@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//Used to render a TabPanel componented based on passed in props
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -75,6 +76,7 @@ function TabPanel(props) {
   );
 }
 
+//Sets the Tab components attributes based on passed in index
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -82,11 +84,24 @@ function a11yProps(index) {
   };
 }
 
+/**
+ * A component used for rendering the SingIn form and used for handling the users inputs
+ * @param {Object} props - contains a booelan for wether comoponent is open and a function for closing the Modal
+ */
 const SignIn = (props) => {
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
+
+  // sets up a variable that allows access to firebase
   const firebase = useFirebase();
+
+  // used for setting components styles
   const classes = useStyles();
+
+  //used for checking the authState data (error text and loading text)
   const authState = useSelector((state) => state.authState.data);
+
+  //Local state which holds the users email, password and confirmedpassword. Confirmedpassword is used when registering a new user
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -94,6 +109,7 @@ const SignIn = (props) => {
     showPassword: false,
   });
 
+  //Local state that keep track of the current open Tab
   const [tabIndex, setTabIndex] = useState(0);
 
   const handleChange = (prop) => (event) => {
@@ -104,8 +120,10 @@ const SignIn = (props) => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
+  //Used for binding the dispatch of our singIn action
   const boundSignIn = () => dispatch(signIn(firebase, values));
 
+  //Used for binding the dispatch of our Register action
   const boundRegister = () => dispatch(register(firebase, values));
 
   const handleSubmit = (event) => {

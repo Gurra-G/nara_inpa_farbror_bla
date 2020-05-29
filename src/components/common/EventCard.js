@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//used for calculating the distance between the users positon and the selected event in KM with latitude and longitude
 const distance = (lat1, lon1, lat2, lon2) => {
   if (lat1 === lat2 && lon1 === lon2) {
     return 0;
@@ -67,6 +68,7 @@ const distance = (lat1, lon1, lat2, lon2) => {
   }
 };
 
+//Sets the color for the avatar based on distance
 const setColor = (distance) => {
   let color;
 
@@ -85,16 +87,32 @@ const setColor = (distance) => {
 };
 
 const EventCard = (props) => {
+  //used for checking the authState data (error text and loading text)
   const auth = useSelector((state) => state.firebase.auth);
+
+  //used for checking wether the users wants to check all events or their own
   const filter = useSelector((state) => state.filterState.filter);
+
+  //used for storing data in the firebase database
   const firestore = useFirestore();
+
+  //gets the event data and mypostion data passed down as props
   const { event, myPosition } = props;
+
+  // used for setting components styles
   const classes = useStyles();
+
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
+
+  //Used for binding the dispatch of our addToDb action
   const boundAddToDb = () =>
     dispatch(saveEventToDb(firestore, event, auth.uid));
+
+  //Used for binding the dispatch of our DeleteEvent action
   const boundDeleteEvent = (id) =>
     dispatch(deleteDbEvent(firestore, id, auth.uid));
+
   return (
     <Card className={classes.root}>
       <CardHeader

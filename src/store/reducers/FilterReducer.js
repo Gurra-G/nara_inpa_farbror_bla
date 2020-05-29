@@ -4,6 +4,7 @@ const INIT_STATE = {
   filter: false,
 };
 
+//handles the filter option for displaying all or only saved events
 const FilterReducer = (state = INIT_STATE, action) => {
   const { type } = action;
   switch (type) {

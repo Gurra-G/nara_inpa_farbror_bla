@@ -18,16 +18,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ *
+ * @param {Object} props - contains current events based on filter, the users position, fetchCounter value and increseCounter function
+ */
 const List = (props) => {
+  //holds the firebase auth object
   const auth = useSelector((state) => state.firebase.auth);
+
+  //used for checking the redux filter state
   const filter = useSelector((state) => state.filterState.filter);
+
+  // used for setting the component styles
   const classes = useStyles();
+
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
 
   const handleClick = () => {
     dispatch(fetchEvents(props.increaseCounter()));
   };
 
+  //connects to the firestore user collection and subsequent collections
   useFirestoreConnect([
     auth.uid
       ? {
@@ -39,8 +51,10 @@ const List = (props) => {
       : { collection: "users" }, // Ugly crash fix when signed out and unable to fetch subcollections
   ]);
 
+  //fetches the users saved events from firestore
   const savedEvents = useSelector((state) => state.firestore.data.myEvents);
 
+  //used for creating a array based on the users saved events object keys
   const filterEvents = () => {
     return savedEvents !== undefined
       ? Object.keys(savedEvents).map((key) => {

@@ -6,6 +6,7 @@ const INIT_STATE = {
   error: false,
 };
 
+//handles the fetching of events from brottsplatskartans api
 const EventReducer = (state = INIT_STATE, action) => {
   const { type, payload } = action;
   switch (type) {

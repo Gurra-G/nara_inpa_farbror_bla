@@ -5,12 +5,22 @@ import List from "../views/List";
 import { fetchEvents } from "../../store/actions/EventActions";
 import { CircularProgress } from "@material-ui/core";
 
-function Dashboard(props) {
+/**
+ * A component used for rendering the Dashboard
+ */
+function Dashboard() {
+  //Local state used for storing the users position through geolocation
   const [myPosition, setPosition] = useState(null);
+
+  //stores a int used when fetching events
   const [fetchCounter, setCounter] = useState(1);
+
+  //used for dispatching actions in the component
   const dispatch = useDispatch();
 
   const filter = useSelector((state) => state.filterState.filter);
+
+  //used for fetching the events in the event reducer state
   const events = useSelector((state) => state.eventState.data);
 
   const increaseCounter = () => {
@@ -18,10 +28,12 @@ function Dashboard(props) {
     return fetchCounter + 1;
   };
 
+  //Dispatches an action which fires a api call for fetcing events
   useEffect(() => {
     dispatch(fetchEvents(fetchCounter));
   }, [dispatch]);
 
+  //Gets the users position through geolocation
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,

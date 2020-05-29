@@ -1,6 +1,7 @@
 import * as Types from "./Types";
 import { $CombinedState } from "redux";
 
+//handles the registering of a new user based on passed in credentials by dispatching an action
 export const register = (firebase, credentials) => {
   return (dispatch) => {
     dispatch({ type: Types.TRY_TO_REGISTER });
@@ -15,6 +16,7 @@ export const register = (firebase, credentials) => {
   };
 };
 
+//handles the singin in of a existing user based on passed in credentials by dispatching an action
 export const signIn = (firebase, credentials) => {
   return (dispatch) => {
     dispatch({ type: Types.TRY_TO_SIGN_IN });
@@ -36,6 +38,7 @@ export const signIn = (firebase, credentials) => {
   };
 };
 
+//handles singin out an existing user based on passed in credentials by dispatching an action
 export const signOut = (firebase) => {
   return (dispatch) => {
     dispatch({ type: Types.TRY_TO_SIGN_OUT });
