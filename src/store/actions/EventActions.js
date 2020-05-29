@@ -1,18 +1,22 @@
 import * as Types from "./Types";
 
-export const fetchEvents = () => {
+export const fetchEvents = (counter) => {
   return (dispatch, getState) => {
+    const oldEvents = getState().eventState.data;
     dispatch({ type: Types.TRY_TO_FETCH_BROTTSPLATS_EVENTS });
-    fetch("https://brottsplatskartan.se/api/events?area=skåne län")
+    fetch(
+      `https://brottsplatskartan.se/api/events?area=skåne län&limit=20&page=${counter}`
+    )
       .then((response) => {
         return response.json();
       })
-      .then((data) =>
+      .then((data) => {
+        console.log(data.data);
         dispatch({
           type: Types.SUCCEEDED_TO_FETCH_BROTTSPLATS_EVENTS,
-          payload: data.data,
-        })
-      )
+          payload: oldEvents.concat(data.data),
+        });
+      })
       .catch((error) => {
         dispatch({
           type: Types.FAILED_TO_FETCH_BROTTSPLATS_EVENTS,

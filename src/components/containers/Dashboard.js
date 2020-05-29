@@ -7,13 +7,19 @@ import { CircularProgress } from "@material-ui/core";
 
 function Dashboard(props) {
   const [myPosition, setPosition] = useState(null);
+  const [fetchCounter, setCounter] = useState(1);
   const dispatch = useDispatch();
 
   const filter = useSelector((state) => state.filterState.filter);
   const events = useSelector((state) => state.eventState.data);
 
+  const increaseCounter = () => {
+    setCounter(fetchCounter + 1);
+    return fetchCounter + 1;
+  };
+
   useEffect(() => {
-    dispatch(fetchEvents());
+    dispatch(fetchEvents(fetchCounter));
   }, [dispatch]);
 
   useEffect(() => {
@@ -32,14 +38,18 @@ function Dashboard(props) {
   }, []);
 
   return (
-    <div id="dashboardDiv">
+    <Fragment>
       {myPosition != null ? (
-        <List events={!filter ? events : []} myPosition={myPosition} />
+        <List
+          events={!filter ? events : []}
+          myPosition={myPosition}
+          fetchCounter={fetchCounter}
+          increaseCounter={increaseCounter}
+        />
       ) : (
         <CircularProgress variant={"secondary"} />
       )}
-      )}
-    </div>
+    </Fragment>
   );
 }
 

@@ -16,22 +16,6 @@ function App() {
     setOpen(false);
   };
 
-  // Start of a function that loads more content if the user scrolls to bottom or near bottom
-
-  // const appRef = useRef(null);
-  // const loadMoreContent = (event) => {
-  //   console.log(appRef);
-  //   // if (
-  //   //   event.target.scrollHeight - event.target.scrollTop ===
-  //   //   event.target.clientHeight
-  //   // )
-  //   console.log(event);
-  // };
-
-  // // useEffect(() => {
-  // //   appRef.current.addEventListener("scroll", loadMoreContent, true);
-  // // }, [appRef]);
-
   return (
     <BrowserRouter>
       <AuthIsLoaded>
