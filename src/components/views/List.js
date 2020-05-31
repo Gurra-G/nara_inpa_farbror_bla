@@ -56,7 +56,7 @@ const List = (props) => {
 
   //used for creating a array based on the users saved events object keys
   const filterEvents = () => {
-    return savedEvents !== undefined
+    return savedEvents !== undefined && savedEvents !== null
       ? Object.keys(savedEvents).map((key) => {
           return savedEvents[key];
         })

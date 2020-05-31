@@ -3,13 +3,13 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTO_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: "AIzaSyA16X0S81Bh8ASsmB2jEsm0wIeK-A25fBM",
+  authDomain: "nara-inpa-farbor-bla.firebaseapp.com",
+  databaseURL: "https://nara-inpa-farbor-bla.firebaseio.com/",
+  projectId: "nara-inpa-farbor-bla",
+  storageBucket: "nara-inpa-farbor-bla.appspot.com",
+  messagingSenderId: "985507215515",
+  appId: "1:985507215515:web:4ef26028bdbba2f711ee3e",
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
