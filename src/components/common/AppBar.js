@@ -19,6 +19,8 @@ import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { setFilter, dropFilter } from "../../store/actions/FilterActions";
 import { Redirect } from "react-router";
 
+import Banner from "./Banner";
+
 //Hides the navigationbar when the user scrolls down
 function HideOnScroll(props) {
   const { children, window } = props; //Property destructering
@@ -121,6 +123,7 @@ const Appbar = (props) => {
   return (
     <Fragment>
       <CssBaseline />
+      <Banner />
       <HideOnScroll {...props}>
         <AppBar>
           <Toolbar>
