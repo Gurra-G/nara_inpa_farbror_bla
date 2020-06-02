@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import EventCard from "../common/EventCard";
-import { Grid, Fab, makeStyles } from "@material-ui/core";
+import { Grid, Fab, makeStyles, Typography } from "@material-ui/core";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { useSelector, useDispatch } from "react-redux";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { fetchEvents } from "../../store/actions/EventActions";
+
+import Banner from "../common/Banner";
 
 const useStyles = makeStyles((theme) => ({
   moreEventsButton: {
@@ -15,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       background: "transparent",
     },
+  },
+  gridHeader: {
+    marginTop: "10px",
+    textAlign: "center",
   },
 }));
 
@@ -47,6 +53,7 @@ const List = (props) => {
           doc: auth.uid,
           subcollections: [{ collection: "events" }],
           storeAs: "myEvents",
+          orderBy: ["date_human", "desc"],
         }
       : { collection: "users" }, // Ugly crash fix when signed out and unable to fetch subcollections
   ]);
@@ -65,12 +72,16 @@ const List = (props) => {
 
   return (
     <Fragment>
+      <Banner />
+      <Typography variant="h5" className={classes.gridHeader}>
+        {!filter ? "Senaste nytt" : "Dina sparade händelser"}
+      </Typography>
       <Grid
         container
         direction="row"
         justify="space-evenly"
         alignItems="flex-start"
-        style={{ paddingTop: 100 }}
+        style={{ paddingTop: 10 }}
       >
         {!filter
           ? props.events.map((event) => (

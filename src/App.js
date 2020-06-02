@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import AuthIsLoaded from "./components/authentication/AuthIsLoaded";
 import Router from "./components/router";
 import AppBar from "./components/common/AppBar";
@@ -29,7 +29,7 @@ function App() {
     <BrowserRouter>
       <AuthIsLoaded>
         <div className="App">
-          <AppBar handleOpen={handleOpen} />
+          <AppBar handleOpen={handleOpen} page={window} />
           <SignIn open={open} handleClose={handleClose} />
           <CustomSnackbar />
           <Router />

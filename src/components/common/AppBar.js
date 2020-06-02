@@ -2,8 +2,6 @@ import React, { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
 import {
-  Button,
-  Slide,
   useScrollTrigger,
   AppBar,
   Toolbar,
@@ -17,25 +15,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import { signOut } from "../../store/actions/AuthActions";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { setFilter, dropFilter } from "../../store/actions/FilterActions";
-import { Redirect } from "react-router";
 
-import Banner from "./Banner";
-
-//Hides the navigationbar when the user scrolls down
-function HideOnScroll(props) {
-  const { children, window } = props; //Property destructering
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({ target: window ? window() : undefined });
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
 const useStyles = makeStyles((theme) => ({
+  transparent: {
+    background: "rgba(255, 255, 255, 0)",
+    boxShadow: "none",
+  },
+  hiddenTitle: {
+    color: "transparent",
+    flexGrow: 1,
+  },
+  whiteBar: {
+    background: "rgba(255, 255, 255, 1)",
+    color: "black",
+  },
   root: {
     flexGrow: 1,
   },
@@ -52,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
  * @param {Object} props - contains a boolean for wether comoponent is open
  */
 const Appbar = (props) => {
+  const { window, page } = props; //Property destructering
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({ target: window ? window() : undefined });
+
   //used for dispatching actions in the component
   const dispatch = useDispatch();
 
@@ -64,7 +63,7 @@ const Appbar = (props) => {
   //Used for binding the dispatch of our SignOut action
   const boundSignOut = () => {
     dispatch(signOut(firebase));
-    window.location.reload(false);
+    page.location.reload(false);
     /*Please forgive us*/
   };
 
@@ -111,7 +110,10 @@ const Appbar = (props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={boundDropFilter}>Alla händelser</MenuItem>
-      <MenuItem onClick={boundSetFilter}>Sparade händelser</MenuItem>
+      <MenuItem onClick={boundSetFilter} disabled={!auth.uid ? true : false}>
+        {" "}
+        Sparade händelser
+      </MenuItem>
       {auth.uid != null ? (
         <MenuItem onClick={boundSignOut}>Logga ut</MenuItem>
       ) : (
@@ -123,26 +125,26 @@ const Appbar = (props) => {
   return (
     <Fragment>
       <CssBaseline />
-      <Banner />
-      <HideOnScroll {...props}>
-        <AppBar>
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              Nära inpå farbror blå
-            </Typography>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={"primary-setting-menu"}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <MenuOpenIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
+      <AppBar className={!trigger ? classes.transparent : classes.whiteBar}>
+        <Toolbar>
+          <Typography
+            variant="h6"
+            className={!trigger ? classes.hiddenTitle : classes.title}
+          >
+            Nära inpå farbror blå
+          </Typography>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={"primary-setting-menu"}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            <MenuOpenIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
       {renderMenu}
     </Fragment>
   );

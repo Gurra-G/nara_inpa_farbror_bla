@@ -12,7 +12,6 @@ export const fetchEvents = (counter) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data.data);
         dispatch({
           type: Types.SUCCEEDED_TO_FETCH_BROTTSPLATS_EVENTS,
           payload: oldEvents.concat(data.data),
@@ -62,16 +61,17 @@ export const deleteDbEvent = (firestore, id, uid) => {
 
 //handles the saving of an event for a specific user in the firestore by dispatching an action
 export const saveEventToDb = (firestore, event, uid) => {
+  const eventDate = new Date(event.pubdate_iso8601);
   const finalEvent = {
     lat: event.lat,
     lng: event.lng,
-    date_human: event.date_human,
+    date_human: eventDate.toLocaleDateString(),
     description: event.description,
     image: event.image,
     title_type: event.title_type,
+    content: event.content,
     content_teaser: event.content_teaser,
     id: event.id,
-    content_formatted: event.content_formatted,
     user: uid,
   };
   return (dispatch) => {

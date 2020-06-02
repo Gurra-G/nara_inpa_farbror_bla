@@ -1,5 +1,4 @@
 import * as Types from "./Types";
-import { $CombinedState } from "redux";
 
 //handles the registering of a new user based on passed in credentials by dispatching an action
 export const register = (firebase, credentials) => {

@@ -17,13 +17,7 @@ import {
   Tab,
   Box,
 } from "@material-ui/core";
-import {
-  Mail,
-  Visibility,
-  VisibilityOff,
-  ContactsOutlined,
-  SentimentSatisfied,
-} from "@material-ui/icons";
+import { Mail, Visibility, VisibilityOff } from "@material-ui/icons";
 import clsx from "clsx";
 
 import { signIn, register } from "../../store/actions/AuthActions";

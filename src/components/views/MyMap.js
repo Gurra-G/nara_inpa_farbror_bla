@@ -10,12 +10,12 @@ import { GOOGLE_MAPS_API_KEY } from "../../config/googleConfig";
 
 //used for displaying the current event (card) the user clicked on from all events
 const filterCurrentCard = (currentCardId, events) => {
-  const event = events.filter((event) => event.id == currentCardId);
+  const event = events.find((event) => event.id == currentCardId);
   return (
     <Marker
       position={{
-        lat: event[0].lat,
-        lng: event[0].lng,
+        lat: event.lat,
+        lng: event.lng,
       }}
     />
   );
@@ -38,7 +38,7 @@ const MyMap = (props) => {
   //used for dispatching actions in the component
   const dispatch = useDispatch();
 
-  //Dispatches an action which fires a api call for fetcing events
+  //Dispatches an action which fires a api call for fetching events
   useEffect(() => {
     dispatch(fetchEvents());
   }, [dispatch]);
@@ -85,7 +85,7 @@ const MyMap = (props) => {
               lng: myPosition.longitude,
             }}
           />
-          {events != null ? filterCurrentCard(id, events) : ""}
+          {events.length > 0 ? filterCurrentCard(id, events) : ""}
         </Map>
       ) : (
         <CircularProgress />

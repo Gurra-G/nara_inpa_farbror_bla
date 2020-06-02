@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -12,12 +12,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
 import { saveEventToDb, deleteDbEvent } from "../../store/actions/EventActions";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,7 +72,7 @@ const setColor = (distance) => {
   let color;
 
   switch (true) {
-    case distance < 2:
+    case distance <= 2:
       color = { backgroundColor: "crimson" };
       break;
     case distance > 2 && distance < 20:
@@ -113,6 +112,14 @@ const EventCard = (props) => {
   const boundDeleteEvent = (id) =>
     dispatch(deleteDbEvent(firestore, id, auth.uid));
 
+  //Toggles between content_teaser and full content on event cards
+  const [expanded, setExpanded] = useState(false);
+
+  //Toggles the "expanded" state
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -144,9 +151,11 @@ const EventCard = (props) => {
         <CardMedia className={classes.media} image={event.image} title="" />
       </Link>
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {event.content_teaser}
-        </Typography>
+        {!expanded ? (
+          <Typography variant="body2" color="textSecondary" component="p">
+            {event.content_teaser}
+          </Typography>
+        ) : null}
       </CardContent>
 
       <CardActions disableSpacing>
@@ -167,7 +176,22 @@ const EventCard = (props) => {
             <DeleteIcon />
           </IconButton>
         )}
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
       </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <div dangerouslySetInnerHTML={{ __html: event.content }} />
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };
